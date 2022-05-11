@@ -3,52 +3,23 @@
 <head>
     <meta charset="utf-8" />
     <title>MDN Breakout Game</title>
-    <style>
-    	* { padding: 0; margin: 0; }
-
-      .game {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        margin: 0 auto;
-        position: relative;
-      }
-
-    	canvas { 
-        background: #eee;
-        display: block;
-      }
-
-      .btnStart {
-        color: #333;
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        padding: 5px 20px;
-        background-color: #fefefe;
-        border: 2px solid #0095dd;
-        border-radius: .2rem;
-        cursor: pointer;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      .btnStart--hide {
-        display: none;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <div class="game-info">
+    <h1 class="game-title">Информация к игре</h1>
+    <ul class="game-list">
+      <li class="game-item">1. Движение ракетки стрелочки &#8592; &#8594;.</li>
+      <li class="game-item">2. Скорость игры стрелочки &#8593; &#8595;.</li>
+      <li class="game-item">3. Клавиша "пробел" запустить, остановить игру.</li>
+    </ul>
+  </div>
+
   <div class="game">
     <canvas id="myCanvas" width="480" height="320"></canvas>
-    <button class="btnStart" type="button">Start</button>
+    <button class="btn-start" type="button">Start</button>
   </div>
-  
 
 <script src="index.js"></script>
 </body>
