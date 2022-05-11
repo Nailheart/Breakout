@@ -1,3 +1,4 @@
+const startGameButton = document.querySelector('.btn-start');
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -27,12 +28,9 @@ const brickPadding = 10;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
 
-// Счет
 let score = 0;
-
-// Жизни
 let lives = 3;
-
+let speed = 3;
 let gameReq;
 
 // Создаем двумерный массив
@@ -49,8 +47,14 @@ for(let c = 0; c < brickColumnCount; c++) {
 document.addEventListener("mousemove", mouseMoveHandler, false);
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
-document.addEventListener("keydown", startGameHandler, false);
-document.addEventListener("keydown", stopGameHandler, false);
+document.addEventListener("keydown", toggleGameHandler, false);
+document.addEventListener("keydown", speedHandler, false);
+
+// Начинаем игру по клику мыши
+startGameButton.addEventListener('click', () => {
+  startGameButton.classList.add('btn-start--hide');
+  draw();
+});
 
 // Движения ракетки мышкой
 function mouseMoveHandler(e) {
@@ -64,8 +68,7 @@ function mouseMoveHandler(e) {
 function keyDownHandler(e) {
   if (e.keyCode == 39) {
     rightPressed = true;
-  }
-  else if (e.keyCode == 37) {
+  } else if (e.keyCode == 37) {
     leftPressed = true;
   }
 }
@@ -74,25 +77,31 @@ function keyDownHandler(e) {
 function keyUpHandler(e) {
   if (e.keyCode == 39) {
     rightPressed = false;
-  }
-  else if (e.keyCode == 37) {
+  } else if (e.keyCode == 37) {
     leftPressed = false;
   }
 }
 
-// Старт игры
-function startGameHandler(e) {
-  if (e.keyCode == 13) {
-    startButton.classList.add('btnStart--hide');
+// Запустить остановить игру
+function toggleGameHandler(e) {
+  if (e.keyCode == 32 && startGameButton.classList.contains('btn-start--hide')) {
+    cancelAnimationFrame(gameReq);
+    startGameButton.classList.remove('btn-start--hide');
+  } else if (e.keyCode == 32) {
+    cancelAnimationFrame(gameReq);
+    startGameButton.classList.add('btn-start--hide');
     draw();
   }
 }
 
-// Остановка игры
-function stopGameHandler(e) {
-  if (e.keyCode == 32) {
-    cancelAnimationFrame(gameReq);
-    startButton.classList.remove('btnStart--hide');
+// Повышение скорости игры
+function speedHandler(e) {
+  if (e.keyCode == 38) {
+    dx > 0 ? dx++ : dx--;
+    dy > 0 ? dy++ : dy--;
+  } else if (e.keyCode == 40) {
+    dx > 0 ? dx-- : dx++;
+    dy > 0 ? dy-- : dy++;
   }
 }
 
@@ -131,6 +140,13 @@ function drawLives() {
   ctx.font = "16px Arial";
   ctx.fillStyle = "#0095DD";
   ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+}
+
+// Рисуем скорость
+function drawSpeed() {
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Speed: " + speed, 220, 20);
 }
 
 // Рисуем мяч
@@ -175,7 +191,7 @@ function drawBricks() {
   }
 }
 
-// Рисуем все компонетов игры
+// Рисуем все компонеты игры
 function drawGameComponent() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBricks();
@@ -183,6 +199,7 @@ function drawGameComponent() {
   drawPaddle();
   drawScore();
   drawLives();
+  // drawSpeed();
 }
 
 // Отрисовка игры
@@ -196,6 +213,7 @@ function draw() {
   drawPaddle();
   drawScore();
   drawLives();
+  // drawSpeed();
   collisionDetection();
   
   // Отскок от границ игрового поля
@@ -240,10 +258,3 @@ function draw() {
 
 // Отрисовка компонентов игры
 drawGameComponent();
-
-// Start game
-const startButton = document.querySelector('.btnStart');
-startButton.addEventListener('click', () => {
-  startButton.classList.add('btnStart--hide');
-  draw();
-});
