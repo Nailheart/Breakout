@@ -1,0 +1,11 @@
+{
+  "name": "breakout",
+  "description": "Simple Breakout game",
+  "homepage": "https://github.com/Nailheart/Breakout#readme",
+  "devDependencies": {
+    "gh-pages": "latest"
+  },
+  "scripts": {
+    "deploy": "gh-pages -d build"
+  }
+}
